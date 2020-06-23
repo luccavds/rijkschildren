@@ -274,15 +274,21 @@
       </section>
       <section data-role="site-menu-item site-menu-current-item" class="site-menu-item mini-page-wrapper bg-accent-darkest">
         <button data-role="open-site-menu-sub-items" class="open-site-menu-sub-items full-width reset-padding-x text-strong bg-accent-darkest">
-          <span class="mini-page reset-spacing-y">Rijksstudio<span class="mobile-l-hide">: dive into the collection</span></span>
+          <span class="mini-page reset-spacing-y">Rijkschildren<span class="mobile-l-hide">: make art come to life</span></span>
         </button>
         <div data-role="site-menu-sub-items" class="mini-page reset-padding-top site-menu-sub-items">
           <ul class=" reset-list row columns-4 tablet-p-columns-1 reset-margin-y">
               <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
-                <a href="/en/rijksstudio">Explore Rijksstudio</a>
+                <a href="quizzes.html">Quizzes</a>
               </li>
               <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
-                <a href="/en/search">Search in Rijksstudio</a>
+                <a href="games.html">Games</a>
+              </li>
+              <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
+                <a href="information.html">Information</a>
+              </li>
+              <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
+                <a href="restaurant.html">Restaurant</a>
               </li>
           </ul>
         </div>
@@ -418,15 +424,12 @@
   </section>
   <section class="mini-page-wrapper bg-lightest">
 
-  <div id="game-instructions"
- <br><br>
- <p>Oh no! You tried to steal an expensive painting but the alarms went off! Try to get as far as possible with the painting!</p>
- <button onclick="javascript:startGame()">Start</button>
-   </div>
-
 
     <section class="mini-page text-intro">
       <div class="expandable-text margin-bottom-1x" aria-labelledby="expandable-text" style="height: auto;">
+        <p>Oh no! You tried to steal The Milkmaid but the alarms went off! Try to get as far as possible with the painting!</p>
+        <button onclick="javascript:startGame()">Start</button>
+        <br><br>
         <style>
           canvas {
               border:1px solid #d3d3d3;
@@ -493,7 +496,7 @@
                 this.x,
                 this.y,
                 this.width, this.height);
-            } 
+            }
                 else {
                     ctx.fillStyle = color;
                     ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -572,7 +575,9 @@
 
         <button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">Jump!</button>
 
-
+        <br><br>
+        <p>Do you want to learn something about The Milkmaid?</p>
+        <a href="milkmaid.html" class="button-like button-big button-bold bg-accent-light margin-top-1x icon-im-arrow-button-thin icon-after">Click here!</a>
 
         </div></section>
 

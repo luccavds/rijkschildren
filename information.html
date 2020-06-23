@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=1">
 
   <link href="https://cdn.rijksmuseum.nl/v-1afe67ff57fa6f919d32a13d950be248/WebStatic/rijksmuseum-web-fonts.css" media="all" rel="stylesheet" type="text/css">
-  <title>Children - Rijksmuseum</title>
+  <title>Information - Rijksmuseum</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <meta name="version" content="Rijksmuseum.Web - 5.55.7974.0">
@@ -109,7 +109,7 @@
 
 <header data-role="site-header" class="site-header offset-parent stoned-plus1 align-mini-page reset-padding-ends">
     <nav class="site-back-nav corner-top-left fit-container reset-padding-corners zoom-auto-hide" aria-label="Back to Home">
-        <a data-role="site-back-button" class="button-like button-combo-start button-back-sm" href="index.html">Children</a>
+        <a data-role="site-back-button" class="button-like button-combo-start button-back-sm" href="children.html">Children</a>
     </nav>
     <nav class="from-moblg-hide site-back-nav text-right corner-top-right fit-container reset-padding-corners zoom-auto-hide">
         <a class="button-like button-primary" href="/en/tickets">
@@ -274,15 +274,21 @@
       </section>
       <section data-role="site-menu-item site-menu-current-item" class="site-menu-item mini-page-wrapper bg-accent-darkest">
         <button data-role="open-site-menu-sub-items" class="open-site-menu-sub-items full-width reset-padding-x text-strong bg-accent-darkest">
-          <span class="mini-page reset-spacing-y">Rijksstudio<span class="mobile-l-hide">: dive into the collection</span></span>
+          <span class="mini-page reset-spacing-y">Rijkschildren<span class="mobile-l-hide">: make art come to life</span></span>
         </button>
         <div data-role="site-menu-sub-items" class="mini-page reset-padding-top site-menu-sub-items">
           <ul class=" reset-list row columns-4 tablet-p-columns-1 reset-margin-y">
               <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
-                <a href="/en/rijksstudio">Explore Rijksstudio</a>
+                <a href="quizzes.html">Quizzes</a>
               </li>
               <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
-                <a href="/en/search">Search in Rijksstudio</a>
+                <a href="games.html">Games</a>
+              </li>
+              <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
+                <a href="information.html">Information</a>
+              </li>
+              <li class="site-menu-sub-item column reset-padding-bottom tablet-p-stack-compact reset-margin-bottom">
+                <a href="restaurant.html">Restaurant</a>
               </li>
           </ul>
         </div>
@@ -551,10 +557,12 @@
 
 <section class="mini-page-wrapper bg-lightest">
   <div id="resultcontainer">
-    <p>Search an artist to find some of his artworks!
+    <h2 class="h3-like text-weak margin-bottom-2x">
+      Search an artist to find some of his artworks!
+    </h2>
   <form>
     <input class="input" type="text" id="artist" required>
-    <button type="button" onclick="getData()">Search</button>
+    <button type="button" onclick="refreshResults(0)">Search</button>
   </form>
   <table id="resultinfo">
     <tbody>
@@ -591,6 +599,8 @@
   }
 </style>
 <script>
+  var number_of_result;
+
   function showResult(title, image, url){
     if (image == null){
       var tr = $("<td></td>")
@@ -609,9 +619,38 @@
                   .append("<a href=\"" + url + "\" class=\"button-like button-big button-bold bg-accent-light margin-top-1x icon-im-arrow-button-thin icon-after\">More information</a>")
     }
     var newrow = $("<tr></tr>")
-                .append(tr, tr1, tr2)
+                .append(tr, tr1, tr2);
     $("#resultinfo").append(newrow);
   }
+
+  function addViewMore(){
+    var tr = $("<td></td>")
+                .append("<button onclick=\"refreshResults(1)\">View more</button>");
+    var tr2 = $("<td></td>")
+    var tr3 = $("<td id=\"last_column\"></td>")
+    var newrow = $("<tr></tr>")
+                .append(tr, tr2, tr3);
+    $("#resultinfo").append(newrow);
+  }
+
+  function addViewLess(){
+    	$("#last_column").append("<button onclick=\"refreshResults(2)\">View less</button>");
+  }
+
+
+  function refreshResults(amount){
+    if (amount == 0){
+      number_of_result = 10;
+    }
+    if (amount == 1){
+      number_of_result += 10;
+    }
+    if (amount == 2){
+      number_of_result -= 10;
+    }
+    getData()
+  }
+
 
 
   function getData() {
@@ -630,7 +669,7 @@
         query += artist[i];
       }
     }
-    var api = "https://www.rijksmuseum.nl/api/en/collection?key=sEU3lc1K&involvedMaker=" + query;
+    var api = "https://www.rijksmuseum.nl/api/en/collection?key=sEU3lc1K&ps=" + number_of_result + "&involvedMaker=" + query;
     console.log(api);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -645,6 +684,10 @@
           else{
             showResult(collectioninfo.artObjects[i].title, collectioninfo.artObjects[i].webImage.url, collectioninfo.artObjects[i].links.web);
           }
+        }
+        addViewMore();
+        if (number_of_result > 10){
+          addViewLess();
         }
       }
     };
@@ -857,9 +900,9 @@ On display in Nightwatch gallery
                             </figure>
 
 
-              <figure data-role="infinite-scroll-item set-link" data-set-url="/en/rijksstudio/artists/rembrandt-van-rijn/objects#/SK-A-4691,1" class="brick" style="position: absolute; left: 306px; top: 0px;">
+              <figure data-role="infinite-scroll-item set-link" data-set-url="construction.html" class="brick" style="position: absolute; left: 306px; top: 0px;">
                 <div data-role="show-media-actions" class="media-wrapper reset-margin-bottom">
-                  <a href="/en/collection/SK-A-4691" class="media-wrapper">
+                  <a href="construction.html" class="media-wrapper">
 
   <figure class="object-fit-container cover bg-placeholder" style="height: 0; padding-bottom: 122.663%; ">
 
@@ -875,7 +918,7 @@ On display in Nightwatch gallery
 
 
 
-      <a href="/en/mijn/sets/add/SK-A-4691?page=0" data-role="media-actions add-object-to-set" data-button="button-icon button-fav-no" data-title="Self-portrait" data-object-number="SK-A-4691" class="button-like button-icon button-fav-no button-primary button-hover-lightest corner-bottom-right touch-faded-in faded-out">
+      <a href="construction.html" data-role="media-actions add-object-to-set" data-button="button-icon button-fav-no" data-title="Self-portrait" data-object-number="SK-A-4691" class="button-like button-icon button-fav-no button-primary button-hover-lightest corner-bottom-right touch-faded-in faded-out">
           <span class="accessible">Add to my sets</span>
       </a>
 
@@ -883,7 +926,7 @@ On display in Nightwatch gallery
 
                 <figcaption>
                   <h2 class="margin-bottom-halfx h3-like">
-                    <a class="link-reverse" href="/en/collection/SK-A-4691">
+                    <a class="link-reverse" href="construction.html">
                       Self-portrait
                     </a>
                   </h2>
@@ -904,9 +947,56 @@ On display in room 2.8
                 </figcaption>
               </figure>
 
-              <figure data-role="infinite-scroll-item set-link" data-set-url="/en/rijksstudio/artists/rembrandt-van-rijn/objects#/SK-C-6,5" class="brick" style="position: absolute; left: 306px; top: 973px;">
+              <figure data-role="infinite-scroll-item set-link" data-set-url="construction.html" class="brick" style="position: absolute; left: 0px; top: 0px;">
                 <div data-role="show-media-actions" class="media-wrapper reset-margin-bottom">
-                  <a href="/en/collection/SK-C-6" class="media-wrapper">
+                  <a href="construction.html" class="media-wrapper">
+
+  <figure class="object-fit-container cover bg-placeholder" style="height: 0; padding-bottom: 66.2%; ">
+
+
+<img data-src="//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w200" data-srcset="//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w300 300w,//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w500 500w,//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w800 800w,//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w1000 1000w" alt="The Battle of Waterloo" sizes="(min-width: 1301px) calc(25vw - 60px), (min-width: 851px) calc(33.33vw - 40px), (min-width: 801px) calc(50vw - 40px), (min-width: 501px) calc(50vw - 20px), 100vw" class="lazy-image" src="//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w200" srcset="//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w300 300w,//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w500 500w,//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w800 800w,//lh3.googleusercontent.com/MHkVLylkz-ITQAhXck5aQUTXxJX6xequIQbsppMh9eFx2fbg1Botuex8eQidQwyAgGttsISWm2FDipZ0SD5CWEIm_WA=w1000 1000w">
+
+  </figure>
+
+
+                  </a>
+
+
+
+
+
+      <a href="construction.html" data-role="media-actions add-object-to-set" data-button="button-icon button-fav-no" data-title="The Battle of Waterloo" data-object-number="SK-A-1115" class="button-like button-icon button-fav-no button-primary button-hover-lightest corner-bottom-right faded-out touch-faded-in">
+          <span class="accessible">Add to my sets</span>
+      </a>
+
+                </div>
+
+                <figcaption>
+                  <h2 class="margin-bottom-halfx h3-like">
+                    <a class="link-reverse" href="construction.html">
+                      The Battle of Waterloo
+                    </a>
+                  </h2>
+
+                  <p class="text-subtle">
+                    Jan Willem Pieneman, 1824
+                  </p>
+
+                    <p class="rijksstudio-route-promo block-vertical-align reset-padding">
+                      <span class="bg-accent-lightest text-lightest">
+
+
+
+
+On display in room 1.12
+                      </span>
+                    </p>
+                </figcaption>
+              </figure>
+
+              <figure data-role="infinite-scroll-item set-link" data-set-url="construction.html" class="brick" style="position: absolute; left: 306px; top: 973px;">
+                <div data-role="show-media-actions" class="media-wrapper reset-margin-bottom">
+                  <a href="construction.html" class="media-wrapper">
 
   <figure class="object-fit-container cover bg-placeholder" style="height: 0; padding-bottom: 65.833%; ">
 
@@ -922,7 +1012,7 @@ On display in room 2.8
 
 
 
-      <a href="/en/mijn/sets/add/SK-C-6?page=0" data-role="media-actions add-object-to-set" data-button="button-icon button-fav-no" data-title="The Sampling Officials of the Amsterdam Drapers’ Guild, Known as ‘The Syndics’" data-object-number="SK-C-6" class="button-like button-icon button-fav-no button-primary button-hover-lightest corner-bottom-right faded-out touch-faded-in">
+      <a href="construction.html" data-role="media-actions add-object-to-set" data-button="button-icon button-fav-no" data-title="The Sampling Officials of the Amsterdam Drapers’ Guild, Known as ‘The Syndics’" data-object-number="SK-C-6" class="button-like button-icon button-fav-no button-primary button-hover-lightest corner-bottom-right faded-out touch-faded-in">
           <span class="accessible">Add to my sets</span>
       </a>
 
@@ -930,13 +1020,60 @@ On display in room 2.8
 
                 <figcaption>
                   <h2 class="margin-bottom-halfx h3-like">
-                    <a class="link-reverse" href="/en/collection/SK-C-6">
+                    <a class="link-reverse" href="construction.html">
                       The Sampling Officials of the…
                     </a>
                   </h2>
 
                   <p class="text-subtle">
                     Rembrandt van Rijn, 1662
+                  </p>
+
+                    <p class="rijksstudio-route-promo block-vertical-align reset-padding">
+                      <span class="bg-accent-lightest text-lightest">
+
+
+
+
+On display in Gallery of Honour
+                      </span>
+                    </p>
+                </figcaption>
+              </figure>
+
+              <figure data-role="infinite-scroll-item set-link" data-set-url="construction.html" class="brick" style="position: absolute; left: 0px; top: 0px;">
+                <div data-role="show-media-actions" class="media-wrapper reset-margin-bottom">
+                  <a href="construction.html" class="media-wrapper">
+
+  <figure class="object-fit-container cover bg-placeholder" style="height: 0; padding-bottom: 56.08%; ">
+
+
+<img data-src="//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w200" data-srcset="//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w300 300w,//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w500 500w,//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w800 800w,//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w1000 1000w" alt="River Landscape with Riders" sizes="(min-width: 1301px) calc(25vw - 60px), (min-width: 851px) calc(33.33vw - 40px), (min-width: 801px) calc(50vw - 40px), (min-width: 501px) calc(50vw - 20px), 100vw" class="lazy-image" src="//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w200" srcset="//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w300 300w,//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w500 500w,//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w800 800w,//lh3.googleusercontent.com/z4na-N97cBG8sDS7qza0JUbMoGYcmHAP6oc_gyotyiWU3pTJpECBtNqdLJqxLl6ALWe5WBy84LpTLgrydrLR-8hwvg=w1000 1000w">
+
+  </figure>
+
+
+                  </a>
+
+
+
+
+
+      <a href="construction.html" data-role="media-actions add-object-to-set" data-button="button-icon button-fav-no" data-title="River Landscape with Riders" data-object-number="SK-A-4118" class="button-like button-icon button-fav-no button-primary button-hover-lightest corner-bottom-right touch-faded-in faded-in">
+          <span class="accessible">Add to my sets</span>
+      </a>
+
+                </div>
+
+                <figcaption>
+                  <h2 class="margin-bottom-halfx h3-like">
+                    <a class="link-reverse" href="construction.html">
+                      River Landscape with Riders
+                    </a>
+                  </h2>
+
+                  <p class="text-subtle">
+                    Aelbert Cuyp, 1653 - 1657
                   </p>
 
                     <p class="rijksstudio-route-promo block-vertical-align reset-padding">
@@ -1164,13 +1301,25 @@ On display in Gallery of Honour
 </figcaption>
 
           </figure>
+        </section>
+        <div id="gotoquiz">
+        <h2 class="h3-like text-weak margin-bottom-2x">
+          Do you think you know everything about the artists and paintings in the Rijksmuseum?
+        </h2>
+        <a href="quizzes.html" class="button-like button-big button-bold bg-accent-light margin-top-1x icon-im-arrow-button-thin icon-after"> Take the quizzes!</a>
+        <br><br>
+        <h2 class="h3-like text-weak margin-bottom-2x">
+          Or do you want to play games with paintings from the Rijksmuseum?
+        </h2>
+        <a href="games.html" class="button-like button-big button-bold bg-accent-light margin-top-1x icon-im-arrow-button-thin icon-after"> Play the games!</a>
+        </div>
+        </div>
       </div>
-    </section>
-  </div>
-
-
-
-
+<style>
+#gotoquiz{
+  margin: 0 0 4% 4%;
+}
+</style>
 
 
 
